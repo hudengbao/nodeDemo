@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 const { SuccessModel, ErrorModel } = require("../model/resModel")
 const { getList, getDeatil, newBlog, updateBlog, deleteBlog } = require("../controller/blog")
+const loginCheck = require('../middleware/loginCheck')
 
 
 /* GET users listing. */
-router.get('/list', function(req, res, next) {
+router.get('/list', (req, res, next)=>{
 
     let author = req.query.author || ''
     const keyword = req.query.keyword || ''
@@ -15,7 +16,7 @@ router.get('/list', function(req, res, next) {
     });
 });
 
-router.get('/detail', function(req, res, next) {
+router.get('/detail', (req, res, next)=>{
 
     const id = req.query.id || '';
 
@@ -24,14 +25,11 @@ router.get('/detail', function(req, res, next) {
     });
 });
 
-router.post('/add', function(req, res, next) {
-
-    console.log(req.body)
-
+router.post('/add', loginCheck, (req, res, next)=>{
     const param = {
         title : req.body.title || '',
         content : req.body.content || '',
-        author : 'lisi'
+        author : req.session.username
     }
 
     return newBlog(param).then(data => {
@@ -39,13 +37,13 @@ router.post('/add', function(req, res, next) {
     });
 });
 
-router.post('/update', function(req, res, next) {
+router.post('/update', loginCheck, (req, res, next)=>{
 
     const param = {
         id:  req.body.id || '',
         title: req.body.title || '',
         content: req.body.content || '',
-        author: 'lisi'
+        author: req.session.username
     }
 
     return updateBlog(param).then(data => {
@@ -53,9 +51,9 @@ router.post('/update', function(req, res, next) {
     });
 });
 
-router.post('/delete', function(req, res, next) {
+router.post('/delete', loginCheck, (req, res, next)=>{
 
-    let author = 'lisi'
+    let author = req.session.username
     const id = req.body.id || ''
 
     return deleteBlog(id, author).then(data => {

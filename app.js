@@ -44,8 +44,8 @@ const sessionStore = new RedisStore({
 app.use(session({
   secret: 'FHHfgf_446',
   cookie: {
-    path: '/',
-    httpOnly: true,
+    path: '/',//默认
+    httpOnly: true,//默认
     maxAge: 24*60*60*1000
   },
   store: sessionStore

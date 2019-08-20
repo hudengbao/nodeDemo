@@ -15,6 +15,6 @@ function genPassword(password){
     return md5(str)
 }
 
-mudule.exports = {
+module.exports = {
     genPassword
 }
